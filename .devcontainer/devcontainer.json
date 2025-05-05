@@ -14,6 +14,7 @@
 	"forwardPorts": [3000, "proxy:8080","db:3306"],
 
 	// Use 'postCreateCommand' to run commands after the container is created.
+	"postCreateCommand": "npm install",
 	"postStartCommand": "npx prisma migrate dev --name init || true",
 
 	// Configure tool-specific properties.
