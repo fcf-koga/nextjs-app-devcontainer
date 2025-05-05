@@ -1,36 +1,88 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Next.js App DevContainer with Nginx and MySQL
 
-## Getting Started
+このリポジトリは、Next.js アプリケーションを Dev Container 上で手軽に開発できるよう構成されたテンプレートです。  
+Nginx、MySQL、Prisma を含んだフルスタック環境が Docker Compose により構築されており、VS Code の Dev Containers 機能を使って即座に開発を開始できます。
 
-First, run the development server:
+---
+
+## 📦 サービス構成
+
+| サービス名 | 内容                  | ポート            |
+|------------|-----------------------|-------------------|
+| app        | Next.js アプリ         | 3000（内部）      |
+| nginx      | リバースプロキシ       | 8080（ホスト）     |
+| db         | MySQL データベース     | 3306（内部）      |
+
+---
+
+## 🚀 セットアップ手順
+
+### ✅ 前提条件
+
+- [Docker](https://www.docker.com/) のインストール
+- [Visual Studio Code](https://code.visualstudio.com/)
+- [Dev Containers 拡張機能](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers)
+
+---
+
+### 🛠 Dev Container の起動
+
+1. リポジトリをクローンします：
+
+    ```bash
+    git clone https://github.com/fcf-koga/nextjs-app-devcontainer.git
+    cd nextjs-app-devcontainer
+    ```
+
+2. VS Code でプロジェクトを開き、  
+   コマンドパレットで「**Reopen in Container**」を選択
+
+    > 初回起動時に `npm install` が自動実行されます  
+    > 起動のたびに `npx prisma migrate dev` が自動実行されます
+
+---
+
+## ⚙️ アプリケーションの起動
+
+Dev Container のターミナルで以下を実行します：
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+アプリは次のURLで確認できます：
+http://localhost:8080
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- nginx がリバースプロキシとして app（Next.js）に転送します
+- localhost:3000 へ直接アクセスも可能（Next.js 単体）
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🧬 Prisma 操作
 
-## Learn More
+### マイグレーション（初回）
+Dev Container の postStartCommand により起動時に自動実行されますが、手動で実行したい場合：
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+npx prisma migrate dev --name init
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Prisma Studio（GUI）
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```bash
+npx prisma studio
+```
+→ ブラウザで http://localhost:5555 にアクセスし、データベースの内容を GUI で閲覧・編集できます。
 
-## Deploy on Vercel
+## 🗃️ データベース接続情報
+.env ファイルに以下の内容が含まれています：
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```env
+DATABASE_URL="mysql://root:password@db:3306/sampledb"
+```
+| 項目      | 値                 |
+| ------- | ----------------- |
+| ユーザー名   | `root`            |
+| パスワード   | `password`        |
+| ホスト     | `db`（dockerサービス名） |
+| ポート     | `3306`            |
+| データベース名 | `sampledb`        |
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
