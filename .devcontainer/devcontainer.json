@@ -2,20 +2,20 @@
 // README at: https://github.com/devcontainers/templates/tree/main/src/javascript-node-postgres
 {
 	"name": "Node.js & MySQL",
-	"dockerComposeFile": "docker-compose.yml",
+	"dockerComposeFile": "../docker-compose.yml",
 	"service": "app",
-	"workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
+	"workspaceFolder": "/workspaces/app",
 
 	// Features to add to the dev container. More info: https://containers.dev/features.
 	// "features": {},
 
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
 	// This can be used to network with other containers or with the host.
-	"forwardPorts": [3000, "proxy:8080","db:3306"],
+	"forwardPorts": [3000, "nginx:8080","db:3306"],
 
 	// Use 'postCreateCommand' to run commands after the container is created.
 	"postCreateCommand": "npm install",
-	"postStartCommand": "npx prisma migrate dev --name init || true",
+	"postStartCommand": "npx prisma migrate dev --name init",
 
 	// Configure tool-specific properties.
 	"customizations": {"vscode": {"extensions": ["prisma.prisma","esbenp.prettier-vscode"]}}
