@@ -111,6 +111,7 @@ docker build -f app/Dockerfile --target prod -t my-next-app .
 │   ├── .env
 │   └── prisma/
 ├── nginx/                # Nginx 開発・本番設定
+│   ├── Dockerfile
 │   ├── nginx.dev.conf
 │   └── nginx.prod.conf
 ├── .devcontainer/        # VS Code DevContainer 設定
