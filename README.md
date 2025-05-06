@@ -120,6 +120,7 @@ docker build -f nginx/Dockerfile -t my-nginx-proxy ./nginx
 │   ├── nginx.dev.conf
 │   └── nginx.prod.conf
 ├── .devcontainer/        # VS Code DevContainer 設定
+│   ├── devcontainer.json
 ├── docker-compose.yml
 └── README.md
 ```
