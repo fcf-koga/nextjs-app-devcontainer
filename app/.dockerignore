@@ -1,0 +1,33 @@
+# ビルド成果物やキャッシュ
+.next
+out
+dist
+build
+coverage
+.cache
+.prisma
+
+# Node modules（イメージ内で npm install するため不要）
+node_modules
+
+# ローカル環境設定ファイル
+.env
+.env.*.local
+*.local
+*.log
+
+# OS / エディタ関連
+.DS_Store
+*.swp
+*.swo
+.vscode
+.idea
+
+# Docker 自身
+Dockerfile*
+.dockerignore
+
+# Git
+.git
+.gitignore
+.gitattributes

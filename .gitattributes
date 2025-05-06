@@ -1,0 +1,35 @@
+# 改行コード制御（Windows/Linux間の整合性）
+* text=auto
+
+# 明示的に改行コードLFに固定（Unix形式）
+*.js     text eol=lf
+*.ts     text eol=lf
+*.tsx    text eol=lf
+*.json   text eol=lf
+*.yml    text eol=lf
+*.yaml   text eol=lf
+*.md     text eol=lf
+*.sh     text eol=lf
+*.env    text eol=lf
+*.sql    text eol=lf
+*.prisma text eol=lf
+
+# バイナリファイル（diff不可）
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.woff binary
+*.woff2 binary
+*.ttf binary
+
+# Prisma Migrations（差分不可として扱いたい場合）
+prisma/migrations/**/migration.sql linguist-generated
+
+# VSCode DevContainer 内部設定（オプションで linguist-generated 扱い）
+.devcontainer/* linguist-generated
+
+# Dockerfile にも eol 固定（念のため）
+Dockerfile text eol=lf
+*.dockerfile text eol=lf

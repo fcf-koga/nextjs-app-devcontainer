@@ -1,27 +1,31 @@
-# Next.js App DevContainer with Nginx and MySQL
+# 🧱 Next.js DevContainer Starter with Nginx & MySQL
 
-このリポジトリは、Next.js アプリケーションを Dev Container 上で手軽に開発できるよう構成されたテンプレートです。  
-Nginx、MySQL、Prisma を含んだフルスタック環境が Docker Compose により構築されており、VS Code の Dev Containers 機能を使って即座に開発を開始できます。
-
----
-
-## 📦 サービス構成
-
-| サービス名 | 内容                  | ポート            |
-|------------|-----------------------|-------------------|
-| app        | Next.js アプリ         | 3000（内部）      |
-| nginx      | リバースプロキシ       | 8080（ホスト）     |
-| db         | MySQL データベース     | 3306（内部）      |
+このリポジトリは、Next.js アプリケーションを Docker DevContainer でローカル開発し、ECS (Fargate) へ本番デプロイできる構成を提供します。  
+Nginx をリバースプロキシとして使用し、MySQL + Prisma による DB 操作を行います。
 
 ---
 
-## 🚀 セットアップ手順
+## ✅ 使用技術スタック
 
-### ✅ 前提条件
+| 技術       | 用途                   |
+|------------|------------------------|
+| Next.js    | フロントエンド/SSR     |
+| Prisma     | ORM / DBマイグレーション |
+| MySQL      | データベース           |
+| Nginx      | リバースプロキシ       |
+| Docker     | コンテナ化             |
+| DevContainer | ローカル開発環境     |
+| ECS (Fargate) | 本番デプロイ先       |
 
-- [Docker](https://www.docker.com/) のインストール
-- [Visual Studio Code](https://code.visualstudio.com/)
-- [Dev Containers 拡張機能](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers)
+---
+
+## ⚙️ アプリケーションの起動
+
+### 🔧 前提
+
+- Docker / Docker Compose
+- VS Code + Remote Containers 拡張
+- WSL2（推奨）
 
 ---
 
@@ -50,8 +54,9 @@ Dev Container のターミナルで以下を実行します：
 npm run dev
 ```
 
-アプリは次のURLで確認できます：
-http://localhost:8080
+### 🌐 アクセス確認
+- アプリ: http://localhost:8080
+- Prisma Studio: http://localhost:5555（手動で起動 npx prisma studio）
 
 - nginx がリバースプロキシとして app（Next.js）に転送します
 - localhost:3000 へ直接アクセスも可能（Next.js 単体）
@@ -73,10 +78,10 @@ npx prisma studio
 → ブラウザで http://localhost:5555 にアクセスし、データベースの内容を GUI で閲覧・編集できます。
 
 ## 🗃️ データベース接続情報
-.env ファイルに以下の内容が含まれています：
+.env ファイル（app/.env）で管理：
 
 ```env
-DATABASE_URL="mysql://root:password@db:3306/sampledb"
+DATABASE_URL="mysql://root:root@db:3306/sampledb"
 ```
 | 項目      | 値                 |
 | ------- | ----------------- |
@@ -86,3 +91,32 @@ DATABASE_URL="mysql://root:password@db:3306/sampledb"
 | ポート     | `3306`            |
 | データベース名 | `sampledb`        |
 
+Docker Compose 内の MySQL 設定と同期しています。
+
+## 🚢 本番構成（ECS/Fargate）
+- app/Dockerfile はマルチステージ構成（開発/本番）
+- 本番用ビルド例：
+```bash
+docker build -f app/Dockerfile --target prod -t my-next-app .
+```
+
+- Nginx は nginx/prod.conf を使用して / へのリバースプロキシを提供
+- ECR にプッシュ後、ECS Fargate での構築に対応
+
+## 📁 ディレクトリ構成
+```bash
+.
+├── app/                  # Next.js + Prisma アプリ
+│   ├── Dockerfile
+│   ├── .env
+│   └── prisma/
+├── nginx/                # Nginx 開発・本番設定
+│   ├── nginx.dev.conf
+│   └── nginx.prod.conf
+├── .devcontainer/        # VS Code DevContainer 設定
+├── docker-compose.yml
+└── README.md
+```
+
+## 📝 ライセンス
+This project is licensed under the MIT License.

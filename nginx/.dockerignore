@@ -1,0 +1,19 @@
+# OS / エディタ関連
+.DS_Store
+*.swp
+*.swo
+*.log
+.vscode
+.idea
+
+# バックアップファイル
+*.conf~
+
+# Docker 自身
+Dockerfile*
+.dockerignore
+
+# Git
+.git
+.gitignore
+.gitattributes
