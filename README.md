@@ -101,6 +101,11 @@ docker build -f app/Dockerfile --target prod -t my-next-app .
 ```
 
 - Nginx は nginx/prod.conf を使用して / へのリバースプロキシを提供
+- 本番用ビルド例：
+```bash
+docker build -f nginx/Dockerfile -t my-nginx-proxy ./nginx
+```
+
 - ECR にプッシュ後、ECS Fargate での構築に対応
 
 ## 📁 ディレクトリ構成
